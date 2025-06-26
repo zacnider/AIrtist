@@ -220,10 +220,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Pinata](https://pinata.cloud) - IPFS storage service
 - [OpenZeppelin](https://openzeppelin.com) - Smart contract library
 
-## 📞 Support
-
-For support, email support@airtist.com or join our Discord community.
-
----
 
 **Built with ❤️ by the AIrtist Team**
