@@ -69,8 +69,8 @@ Navigate to `http://localhost:3000`
 ## 🛠️ Smart Contracts
 
 ### Deployed Contracts (Monad Testnet)
-- **Factory Contract**: `0x7867B987ed2f04Afab67392d176b06a5b002d1F8`
-- **NFT Minter Contract**: `0x176f56fdBc95887a812fE41756F46B5D69eC41F3`
+- **Factory Contract**: `0x....`
+- **NFT Minter Contract**: `0x....`
 
 ### Contract Features
 - **Factory Pattern**: Separate collection management and minting
