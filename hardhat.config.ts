@@ -30,8 +30,8 @@ module.exports = {
         network: "monadTestnet",
         chainId: 10143,
         urls: {
-          apiURL: "https://explorer.monad.xyz/api",
-          browserURL: "https://explorer.monad.xyz",
+          apiURL: "https://sourcify-api-monad.blockvision.org",
+          browserURL: "https://testnet.monadexplorer.com",
         },
       },
     ],
