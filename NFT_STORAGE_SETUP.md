@@ -23,7 +23,7 @@ NFT_STORAGE_API_KEY=your_nft_storage_api_key_here
 
 Replace with your copied API key:
 ```
-NFT_STORAGE_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+NFT_STORAGE_API_KEY=eyJhbGciOi............
 ```
 
 ### 4. Restart Application
