@@ -1,0 +1,9 @@
+{
+  "network": "monadTestnet",
+  "factoryAddress": "0x7867B987ed2f04Afab67392d176b06a5b002d1F8",
+  "testCollectionAddress": "0x1718b71E3e6f81CF9EFb985D83A37f3C210f93B1",
+  "deployer": "0xc55e160D1f2133fc9A11f30cFB4Ee39c98Ff9e2e",
+  "deployedAt": "2025-06-24T18:33:05.383Z",
+  "creationFee": "0.01",
+  "factoryFeePercentage": "1"
+}
