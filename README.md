@@ -209,9 +209,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🔗 Links
 
-- **Live Demo**: [https://airtist.vercel.app](https://airtist.vercel.app)
+- **Live Demo**: [https://airtist.xxx.com](https://airtist.xxx.com)
 - **Monad Explorer**: [https://testnet.monadexplorer.com](https://testnet.monadexplorer.com)
-- **Documentation**: [https://docs.airtist.com](https://docs.airtist.com)
+- **Documentation**: [https://docs.airtist.xxx](https://docs.airtist.xxx)
 
 ## 🙏 Acknowledgments
 
