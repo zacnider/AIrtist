@@ -53,6 +53,7 @@ Edit `.env.local` with your API keys:
 ```env
 NEXT_PUBLIC_PINATA_API_KEY=your_pinata_api_key
 NEXT_PUBLIC_PINATA_SECRET_KEY=your_pinata_secret_key
+REPLICATE_API_TOKEN=r8_your_token_here
 HUGGING_FACE_API_KEY=your_hugging_face_api_key
 PRIVATE_KEY=your_wallet_private_key
 ```
