@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     })
 
     // For demo purposes, we'll use a demo private key
-    const demoPrivateKey = process.env.DEMO_PRIVATE_KEY || '0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d'
+    const demoPrivateKey = process.env.DEMO_PRIVATE_KEY || '0x'
     const account = privateKeyToAccount(demoPrivateKey as `0x${string}`)
     
     const walletClient = createWalletClient({
