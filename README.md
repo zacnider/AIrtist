@@ -35,7 +35,7 @@ AIrtist is a cutting-edge platform that combines AI-powered art generation with 
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/AIrtist.git
+git clone https://github.com/zacnider/AIrtist.git
 cd AIrtist
 ```
 
