@@ -1,31 +1,31 @@
 # 🚀 Live Deployment - Monad Testnet
 
-## 📋 Deployment Bilgileri
+## 📋 Deployment Information
 
-### 🏭 Factory Kontraktı - ✅ VERIFIED
-- **Adres**: `0x7867B987ed2f04Afab67392d176b06a5b002d1F8`
+### 🏭 Factory Contract - ✅ VERIFIED
+- **Address**: `0x7867B987ed2f04Afab67392d176b06a5b002d1F8`
 - **Network**: Monad Testnet
 - **Chain ID**: 10143
-- **Deploy Tarihi**: 24 Haziran 2025, 21:33 (UTC+3)
+- **Deploy Date**: June 24, 2025, 21:33 (UTC+3)
 - **Deployer**: `0xc55e160D1f2133fc9A11f30cFB4Ee39c98Ff9e2e`
 - **Verification**: ✅ [View on Explorer](https://testnet.monadexplorer.com/contracts/partial_match/10143/0x7867B987ed2f04Afab67392d176b06a5b002d1F8/)
 
-### 🎨 Test Koleksiyonu - ✅ VERIFIED
-- **Adres**: `0x1718b71E3e6f81CF9EFb985D83A37f3C210f93B1`
-- **İsim**: "Test Collection"
+### 🎨 Test Collection - ✅ VERIFIED
+- **Address**: `0x1718b71E3e6f81CF9EFb985D83A37f3C210f93B1`
+- **Name**: "Test Collection"
 - **Symbol**: "TEST"
-- **Max Supply**: 100 NFT
+- **Max Supply**: 100 NFTs
 - **Mint Price**: 0.001 MON
 - **Verification**: ✅ [View on Explorer](https://testnet.monadexplorer.com/contracts/partial_match/10143/0x1718b71E3e6f81CF9EFb985D83A37f3C210f93B1/)
 
-## 💰 Ücretlendirme
+## 💰 Pricing
 
-### Factory Ücretleri
-- **Koleksiyon Oluşturma**: 0.01 MON
-- **Platform Komisyonu**: %1 (mint işlemlerinden)
-- **Creator Payı**: %99 (mint işlemlerinden)
+### Factory Fees
+- **Collection Creation**: 0.01 MON
+- **Platform Commission**: 1% (from mint transactions)
+- **Creator Share**: 99% (from mint transactions)
 
-## 🔗 Blockchain Bilgileri
+## 🔗 Blockchain Information
 
 ### Monad Testnet
 - **RPC URL**: https://testnet-rpc.monad.xyz
@@ -33,18 +33,18 @@
 - **Explorer**: https://testnet-explorer.monad.xyz
 - **Faucet**: [Monad Discord](https://discord.gg/monad)
 
-## 🛠️ Kullanım
+## 🛠️ Usage
 
-### 1. Koleksiyon Oluşturma
+### 1. Creating Collection
 ```javascript
-// Factory kontraktına bağlan
+// Connect to Factory contract
 const factory = new Contract(
   "0x7867B987ed2f04Afab67392d176b06a5b002d1F8", 
   FACTORY_ABI, 
   signer
 );
 
-// Yeni koleksiyon oluştur
+// Create new collection
 const tx = await factory.createCollection(
   "My Art Collection",    // name
   "MYART",               // symbol
@@ -55,19 +55,19 @@ const tx = await factory.createCollection(
 );
 
 const receipt = await tx.wait();
-console.log("Yeni koleksiyon adresi:", receipt.logs[0].args.contractAddress);
+console.log("New collection address:", receipt.logs[0].args.contractAddress);
 ```
 
-### 2. NFT Mint Etme
+### 2. Minting NFTs
 ```javascript
-// Koleksiyon kontraktına bağlan
+// Connect to Collection contract
 const collection = new Contract(
   collectionAddress, 
   COLLECTION_ABI, 
   signer
 );
 
-// NFT mint et
+// Mint NFT
 const tx = await collection.mint(
   userAddress,           // to
   "ipfs://metadata-uri", // tokenURI
@@ -75,71 +75,71 @@ const tx = await collection.mint(
 );
 ```
 
-## 🔍 Doğrulama
+## 🔍 Verification
 
-### Factory Kontraktı Fonksiyonları
-- ✅ `createCollection()` - Yeni koleksiyon oluştur
-- ✅ `getTotalCollections()` - Toplam koleksiyon sayısı
-- ✅ `getCollection(id)` - Koleksiyon bilgileri
-- ✅ `getCreatorCollections(address)` - Creator'ın koleksiyonları
+### Factory Contract Functions
+- ✅ `createCollection()` - Create new collection
+- ✅ `getTotalCollections()` - Total collection count
+- ✅ `getCollection(id)` - Collection information
+- ✅ `getCreatorCollections(address)` - Creator's collections
 
-### Koleksiyon Kontraktı Fonksiyonları
-- ✅ `mint(to, tokenURI)` - NFT mint et
-- ✅ `batchMint(to, tokenURIs[])` - Toplu mint
-- ✅ `totalSupply()` - Mevcut supply
-- ✅ `maxSupply()` - Maksimum supply
-- ✅ `mintPrice()` - Mint fiyatı
+### Collection Contract Functions
+- ✅ `mint(to, tokenURI)` - Mint NFT
+- ✅ `batchMint(to, tokenURIs[])` - Batch mint
+- ✅ `totalSupply()` - Current supply
+- ✅ `maxSupply()` - Maximum supply
+- ✅ `mintPrice()` - Mint price
 
-## 🎯 Test Senaryoları
+## 🎯 Test Scenarios
 
-### 1. Koleksiyon Oluşturma Testi
+### 1. Collection Creation Test
 ```bash
-# Factory kontraktından koleksiyon oluştur
+# Create collection from Factory contract
 npx hardhat run scripts/test-create-collection.js --network monadTestnet
 ```
 
-### 2. NFT Mint Testi
+### 2. NFT Mint Test
 ```bash
-# Oluşturulan koleksiyonda NFT mint et
+# Mint NFT in created collection
 npx hardhat run scripts/test-mint-nft.js --network monadTestnet
 ```
 
-## 📊 Gas Maliyetleri
+## 📊 Gas Costs
 
-| İşlem | Gas Kullanımı | Tahmini Maliyet (MON) |
-|-------|---------------|----------------------|
+| Transaction | Gas Usage | Estimated Cost (MON) |
+|-------------|-----------|---------------------|
 | Factory Deploy | ~4.3M gas | ~0.043 MON |
-| Koleksiyon Oluşturma | ~2.4M gas | ~0.024 MON |
+| Collection Creation | ~2.4M gas | ~0.024 MON |
 | NFT Mint | ~200K gas | ~0.002 MON |
-| Batch Mint (5 NFT) | ~750K gas | ~0.0075 MON |
+| Batch Mint (5 NFTs) | ~750K gas | ~0.0075 MON |
 
-## 🔐 Güvenlik
+## 🔐 Security
 
-### Factory Kontraktı
-- ✅ Reentrancy koruması
-- ✅ Owner kontrolü
-- ✅ Fee validasyonu
-- ✅ Supply limitleri
+### Factory Contract
+- ✅ Reentrancy protection
+- ✅ Owner control
+- ✅ Fee validation
+- ✅ Supply limits
 
-### Koleksiyon Kontraktı
-- ✅ Creator yetkilendirmesi
-- ✅ Mint fiyat kontrolü
+### Collection Contract
+- ✅ Creator authorization
+- ✅ Mint price control
 - ✅ Supply enforcement
-- ✅ Otomatik ödeme dağıtımı
+- ✅ Automatic payment distribution
 
-## 🌐 Frontend Entegrasyonu
+## 🌐 Frontend Integration
 
-### Wagmi Konfigürasyonu
+### Wagmi Configuration
 ```typescript
 import { monadTestnet } from 'wagmi/chains';
 
 const config = createConfig({
   chains: [monadTestnet],
-  // ... diğer konfigürasyon
+  // ... other configuration
 });
 ```
 
-### Kontrat Adresleri
+### Contract Addresses
 ```typescript
 export const CONTRACTS = {
   FACTORY_ADDRESS: "0x7867B987ed2f04Afab67392d176b06a5b002d1F8",
@@ -149,21 +149,21 @@ export const CONTRACTS = {
 };
 ```
 
-## 🎉 Başarı Kriterleri
+## 🎉 Success Criteria
 
-- ✅ **Factory Kontraktı**: Başarıyla deploy edildi
-- ✅ **Test Koleksiyonu**: Otomatik oluşturuldu
-- ✅ **Gas Optimizasyonu**: Efficient deployment
-- ✅ **Frontend Entegrasyonu**: Hazır
-- ✅ **Gerçek Blockchain**: Monad Testnet'te live
+- ✅ **Factory Contract**: Successfully deployed
+- ✅ **Test Collection**: Automatically created
+- ✅ **Gas Optimization**: Efficient deployment
+- ✅ **Frontend Integration**: Ready
+- ✅ **Real Blockchain**: Live on Monad Testnet
 
-## 🚀 Sonraki Adımlar
+## 🚀 Next Steps
 
-1. **Frontend Test**: Koleksiyon oluşturma arayüzünü test et
-2. **NFT Mint Test**: Gerçek NFT mint işlemi yap
-3. **Marketplace Entegrasyonu**: OpenSea benzeri platformlarda görünürlük
-4. **Mainnet Deployment**: Production'a geçiş hazırlığı
+1. **Frontend Test**: Test collection creation interface
+2. **NFT Mint Test**: Perform real NFT minting
+3. **Marketplace Integration**: Visibility on OpenSea-like platforms
+4. **Mainnet Deployment**: Preparation for production
 
 ---
 
-**🎯 Sonuç**: Her NFT koleksiyonu artık kendi bağımsız kontratında oluşturuluyor ve Monad Testnet'te gerçek blockchain üzerinde çalışıyor!
+**🎯 Result**: Each NFT collection is now created in its own independent contract and running on real blockchain on Monad Testnet!

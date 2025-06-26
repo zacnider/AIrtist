@@ -1,28 +1,28 @@
-# NFT Görsellerinin Explorer'da Görünmesi İçin IPFS Kurulumu
+# IPFS Setup for NFT Images to Display in Explorer
 
-## Sorun
-NFT'ler mint ediliyor ancak görseller blockchain explorer'da görünmüyor çünkü şu anda mock IPFS hash'leri kullanıyoruz.
+## Problem
+NFTs are being minted but images don't appear in blockchain explorer because we're currently using mock IPFS hashes.
 
-## Çözüm: Pinata IPFS Entegrasyonu
+## Solution: Pinata IPFS Integration
 
-### 1. Pinata Hesabı Oluşturun
-1. https://pinata.cloud adresine gidin
-2. Ücretsiz hesap oluşturun
-3. Dashboard'a giriş yapın
+### 1. Create Pinata Account
+1. Go to https://pinata.cloud
+2. Create a free account
+3. Login to dashboard
 
-### 2. API Key Oluşturun
-1. Pinata Dashboard'da "API Keys" bölümüne gidin
-2. "New Key" butonuna tıklayın
+### 2. Create API Key
+1. Go to "API Keys" section in Pinata Dashboard
+2. Click "New Key" button
 3. Permissions:
    - ✅ pinFileToIPFS
    - ✅ pinJSONToIPFS
    - ✅ unpin
 4. Key Name: "NFT-Artist-dApp"
-5. "Create Key" butonuna tıklayın
-6. API Key ve Secret'i kopyalayın
+5. Click "Create Key" button
+6. Copy API Key and Secret
 
-### 3. Environment Variables Ekleyin
-`.env` dosyasına şu satırları ekleyin:
+### 3. Add Environment Variables
+Add these lines to your `.env` file:
 
 ```env
 # Pinata IPFS Configuration
@@ -31,13 +31,13 @@ PINATA_SECRET_API_KEY=your_pinata_secret_key_here
 PINATA_JWT=your_pinata_jwt_here
 ```
 
-### 4. Pinata SDK Yükleyin
+### 4. Install Pinata SDK
 ```bash
 npm install @pinata/sdk
 ```
 
-### 5. Gerçek IPFS Upload Fonksiyonu
-Aşağıdaki kod ile `/api/upload-ipfs/route.ts` dosyasını güncelleyin:
+### 5. Real IPFS Upload Function
+Update `/api/upload-ipfs/route.ts` file with the following code:
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server'
@@ -106,14 +106,14 @@ export async function POST(request: NextRequest) {
 }
 ```
 
-### 6. Alternatif: Ücretsiz IPFS Çözümleri
+### 6. Alternative: Free IPFS Solutions
 
-#### A) NFT.Storage (Ücretsiz)
+#### A) NFT.Storage (Free)
 ```bash
 npm install nft.storage
 ```
 
-#### B) Web3.Storage (Ücretsiz)
+#### B) Web3.Storage (Free)
 ```bash
 npm install web3.storage
 ```
@@ -123,27 +123,27 @@ npm install web3.storage
 npm install ipfs-http-client
 ```
 
-### 7. Test Etme
-1. Gerçek API key'leri ekleyin
-2. Uygulamayı yeniden başlatın
-3. NFT mint edin
-4. Explorer'da görsel görünmeli
+### 7. Testing
+1. Add real API keys
+2. Restart the application
+3. Mint an NFT
+4. Image should appear in explorer
 
-### 8. Doğrulama
-NFT mint edildikten sonra:
-1. Transaction hash'i kopyalayın
-2. Monad Explorer'da açın
-3. NFT detaylarında görsel görünmeli
-4. Metadata URL'i çalışmalı
+### 8. Verification
+After minting an NFT:
+1. Copy transaction hash
+2. Open in Monad Explorer
+3. Image should appear in NFT details
+4. Metadata URL should work
 
-## Önemli Notlar
-- Pinata ücretsiz planında 1GB depolama var
-- Görseller kalıcı olarak IPFS'te saklanır
-- Metadata URL'i smart contract'ta saklanır
-- Explorer otomatik olarak IPFS'ten görseli çeker
+## Important Notes
+- Pinata free plan has 1GB storage
+- Images are permanently stored on IPFS
+- Metadata URL is stored in smart contract
+- Explorer automatically fetches image from IPFS
 
-## Sorun Giderme
-- API key'lerin doğru olduğundan emin olun
-- CORS ayarlarını kontrol edin
-- Pinata dashboard'da upload'ları kontrol edin
-- Browser console'da hata mesajlarını kontrol edin
+## Troubleshooting
+- Make sure API keys are correct
+- Check CORS settings
+- Check uploads in Pinata dashboard
+- Check error messages in browser console

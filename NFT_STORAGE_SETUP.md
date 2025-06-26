@@ -1,83 +1,83 @@
-# NFT.Storage API Key Kurulumu (Ücretsiz)
+# NFT.Storage API Key Setup (Free)
 
-## Hızlı Kurulum (5 dakika)
+## Quick Setup (5 minutes)
 
-### 1. NFT.Storage Hesabı Oluşturun
-1. https://nft.storage adresine gidin
-2. "Get Started" butonuna tıklayın
-3. GitHub, Google veya email ile ücretsiz hesap oluşturun
+### 1. Create NFT.Storage Account
+1. Go to https://nft.storage
+2. Click "Get Started" button
+3. Create free account with GitHub, Google or email
 
-### 2. API Key Alın
-1. Dashboard'a giriş yapın
-2. "API Keys" sekmesine gidin
-3. "New Key" butonuna tıklayın
+### 2. Get API Key
+1. Login to dashboard
+2. Go to "API Keys" tab
+3. Click "New Key" button
 4. Key Name: "NFT-Artist-dApp"
-5. "Create" butonuna tıklayın
-6. API Key'i kopyalayın
+5. Click "Create" button
+6. Copy the API Key
 
-### 3. .env Dosyasını Güncelleyin
-`.env` dosyasında şu satırı bulun:
+### 3. Update .env File
+Find this line in your `.env` file:
 ```
 NFT_STORAGE_API_KEY=your_nft_storage_api_key_here
 ```
 
-Ve kopyaladığınız API key ile değiştirin:
+Replace with your copied API key:
 ```
 NFT_STORAGE_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
-### 4. Uygulamayı Yeniden Başlatın
+### 4. Restart Application
 ```bash
 npm run dev
 ```
 
-### 5. Test Edin
-1. Demo modunda NFT mint edin
-2. Console'da "NFT.Storage upload successful" mesajını görmelisiniz
-3. Dönen IPFS URL'leri gerçek olacak
+### 5. Test It
+1. Mint NFT in demo mode
+2. You should see "NFT.Storage upload successful" message in console
+3. Returned IPFS URLs will be real
 
-## Önemli Bilgiler
+## Important Information
 
-### ✅ Avantajlar
-- **Tamamen ücretsiz** (Protocol Labs tarafından destekleniyor)
-- **Kalıcı depolama** (Filecoin ağında saklanır)
-- **Hızlı erişim** (IPFS gateway'leri)
-- **Kolay entegrasyon**
+### ✅ Advantages
+- **Completely free** (supported by Protocol Labs)
+- **Permanent storage** (stored on Filecoin network)
+- **Fast access** (IPFS gateways)
+- **Easy integration**
 
-### 📊 Limitler
-- Dosya başına maksimum 32GB
-- Aylık upload limiti yok
-- Rate limiting: saniyede 30 istek
+### 📊 Limits
+- Maximum 32GB per file
+- No monthly upload limit
+- Rate limiting: 30 requests per second
 
-### 🔗 IPFS URL Formatları
+### 🔗 IPFS URL Formats
 - **NFT.Storage Gateway**: `https://nftstorage.link/ipfs/{CID}`
 - **Public IPFS Gateway**: `https://ipfs.io/ipfs/{CID}`
 - **Cloudflare Gateway**: `https://cloudflare-ipfs.com/ipfs/{CID}`
 
-## Sorun Giderme
+## Troubleshooting
 
-### API Key Çalışmıyor
-1. API key'in doğru kopyalandığından emin olun
-2. .env dosyasında tırnak işareti kullanmayın
-3. Uygulamayı yeniden başlatın
+### API Key Not Working
+1. Make sure API key is copied correctly
+2. Don't use quotes in .env file
+3. Restart the application
 
-### Upload Başarısız
-1. İnternet bağlantınızı kontrol edin
-2. NFT.Storage servis durumunu kontrol edin: https://status.nft.storage
-3. Console'da hata mesajlarını kontrol edin
+### Upload Failed
+1. Check your internet connection
+2. Check NFT.Storage service status: https://status.nft.storage
+3. Check error messages in console
 
-### Explorer'da Görsel Görünmüyor
-1. IPFS URL'inin çalıştığından emin olun
-2. Metadata formatının doğru olduğunu kontrol edin
-3. Blockchain explorer'ın IPFS desteği olduğunu kontrol edin
+### Image Not Showing in Explorer
+1. Make sure IPFS URL is working
+2. Check metadata format is correct
+3. Check if blockchain explorer supports IPFS
 
-## Test URL'leri
-API key kurulumu sonrası bu URL'ler çalışmalı:
+## Test URLs
+After API key setup, these URLs should work:
 - Image: `https://nftstorage.link/ipfs/{imageCID}`
 - Metadata: `https://nftstorage.link/ipfs/{metadataCID}`
 
-## Alternatif Çözümler
-Eğer NFT.Storage çalışmazsa:
-1. **Pinata**: Aylık 1GB ücretsiz
-2. **Web3.Storage**: Protocol Labs'ın diğer servisi
-3. **Infura IPFS**: Ethereum ekosistemi entegrasyonu
+## Alternative Solutions
+If NFT.Storage doesn't work:
+1. **Pinata**: 1GB free monthly
+2. **Web3.Storage**: Another Protocol Labs service
+3. **Infura IPFS**: Ethereum ecosystem integration
