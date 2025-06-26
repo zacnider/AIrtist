@@ -1,126 +1,147 @@
-# Pinata IPFS Kurulum Rehberi
+# Pinata IPFS Setup Guide
 
-Bu rehber, NFT Artist DApp'inizde Pinata IPFS servisini nasıl kuracağınızı gösterir.
+This guide shows how to set up Pinata IPFS service in your AIrtist DApp.
 
-## 1. Pinata Hesabı Oluşturma
+## 1. Creating Pinata Account
 
-1. **Pinata'ya git**: https://pinata.cloud/
-2. **Sign Up** butonuna tıklayın
-3. Email ve şifre ile hesap oluşturun
-4. Email doğrulamasını tamamlayın
+1. **Go to Pinata**: https://pinata.cloud/
+2. Click **Sign Up** button
+3. Create account with email and password
+4. Complete email verification
 
-## 2. API Anahtarları Alma
+## 2. Getting API Keys
 
-1. **Pinata Dashboard'a giriş yapın**: https://app.pinata.cloud/
-2. **Sol menüden "API Keys"** seçin
-3. **"New Key"** butonuna tıklayın
-4. **Key ayarları**:
-   - **Key Name**: `NFT-Artist-DApp` (istediğiniz ismi verebilirsiniz)
+1. **Login to Pinata Dashboard**: https://app.pinata.cloud/
+2. **Select "API Keys"** from left menu
+3. Click **"New Key"** button
+4. **Key settings**:
+   - **Key Name**: `AIrtist-DApp` (you can choose any name)
    - **Customize Permissions**:
-     - **Files**: ✅ **Tüm izinleri aktif et** (pinFileToIPFS, unpinning, listing)
-     - **Groups**: ❌ **Kapalı bırak** (ihtiyaç yok)
-     - **Gateways**: ❌ **Kapalı bırak** (ihtiyaç yok)
-     - **Analytics**: ❌ **Kapalı bırak** (ihtiyaç yok)
-   - **Max Uses**: Boş bırakın (sınırsız)
+     - **Files**: ✅ **Enable all permissions** (pinFileToIPFS, unpinning, listing)
+     - **Groups**: ❌ **Keep disabled** (not needed)
+     - **Gateways**: ❌ **Keep disabled** (not needed)
+     - **Analytics**: ❌ **Keep disabled** (not needed)
+   - **Max Uses**: Leave empty (unlimited)
 
-5. **"Create Key"** butonuna tıklayın
-6. **API Key** ve **API Secret** değerlerini kopyalayın
+5. Click **"Create Key"** button
+6. Copy **API Key** and **API Secret** values
 
-### Permissions Detayı:
-- **Files**: NFT görsellerini ve metadata'yı yüklemek için gerekli
-- **Groups**: Dosya grupları yönetimi (NFT projesi için gerekli değil)
-- **Gateways**: Özel gateway yönetimi (ücretsiz plan için gerekli değil)
-- **Analytics**: İstatistik görüntüleme (opsiyonel)
+### Permissions Detail:
+- **Files**: Required to upload NFT images and metadata
+- **Groups**: File group management (not needed for NFT project)
+- **Gateways**: Custom gateway management (not needed for free plan)
+- **Analytics**: Statistics viewing (optional)
 
-⚠️ **ÖNEMLİ**: API Secret sadece bir kez gösterilir, mutlaka kaydedin!
+⚠️ **IMPORTANT**: API Secret is shown only once, make sure to save it!
 
-## 3. Environment Variables Ayarlama
+## 3. Setting Environment Variables
 
-`.env.local` dosyanızı açın ve Pinata anahtarlarınızı ekleyin:
+Open your `.env.local` file and add your Pinata keys:
 
 ```env
 # Pinata IPFS Service (Primary)
-PINATA_API_KEY=your_actual_pinata_api_key_here
-PINATA_SECRET_API_KEY=your_actual_pinata_secret_key_here
+NEXT_PUBLIC_PINATA_API_KEY=your_actual_pinata_api_key_here
+NEXT_PUBLIC_PINATA_SECRET_KEY=your_actual_pinata_secret_key_here
 ```
 
-**Örnek**:
+**Example**:
 ```env
-PINATA_API_KEY=a1b2c3d4e5f6g7h8i9j0
-PINATA_SECRET_API_KEY=k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6
+NEXT_PUBLIC_PINATA_API_KEY=a1b2c3d4e5f6g7h8i9j0
+NEXT_PUBLIC_PINATA_SECRET_KEY=k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6
 ```
 
-## 4. Test Etme
+## 4. Testing
 
-1. Development server'ı yeniden başlatın:
+1. Restart development server:
    ```bash
    npm run dev
    ```
 
-2. AI Studio'da bir görsel oluşturun
-3. Terminal'de şu mesajı görmelisiniz:
+2. Generate an image in AI Studio
+3. You should see this message in terminal:
    ```
    Using Pinata as primary IPFS service...
    Pinata upload successful: { imageCID: "...", metadataCID: "..." }
    ```
 
-## 5. Pinata Dashboard'da Kontrol
+## 5. Check Pinata Dashboard
 
 1. **Pinata Dashboard**: https://app.pinata.cloud/pinmanager
-2. **Files** sekmesinde yüklenen dosyalarınızı görebilirsiniz
-3. Her dosya için:
+2. You can see your uploaded files in **Files** tab
+3. For each file:
    - **CID** (Content Identifier)
-   - **Dosya boyutu**
-   - **Yükleme tarihi**
+   - **File size**
+   - **Upload date**
    - **Gateway URL**
 
-## 6. Fiyatlandırma
+## 6. Pricing
 
-- **Ücretsiz Plan**: 1 GB depolama + 100 GB bandwidth/ay
-- **Pro Plan**: $20/ay - 100 GB depolama + 1 TB bandwidth
-- **Dedicated Gateway**: Daha hızlı erişim için özel gateway
+- **Free Plan**: 1 GB storage + 100 GB bandwidth/month
+- **Pro Plan**: $20/month - 100 GB storage + 1 TB bandwidth
+- **Dedicated Gateway**: Custom gateway for faster access
 
-## 7. Sorun Giderme
+## 7. Troubleshooting
 
-### API Key Hatası
+### API Key Error
 ```
 Error: Request failed with status code 401
 ```
-**Çözüm**: API anahtarlarınızı kontrol edin, doğru kopyalandığından emin olun.
+**Solution**: Check your API keys, make sure they are copied correctly.
 
-### Network Hatası
+### Network Error
 ```
 Error: Network Error
 ```
-**Çözüm**: İnternet bağlantınızı kontrol edin, Pinata servisi çalışıyor mu kontrol edin.
+**Solution**: Check your internet connection, verify Pinata service is working.
 
-### Dosya Boyutu Hatası
+### File Size Error
 ```
 Error: File too large
 ```
-**Çözüm**: Görsel boyutunu küçültün veya Pro plan'a geçin.
+**Solution**: Reduce image size or upgrade to Pro plan.
 
 ## 8. Gateway URLs
 
-Yüklenen dosyalarınıza şu URL'lerden erişebilirsiniz:
+You can access your uploaded files through these URLs:
 
 - **Pinata Gateway**: `https://gateway.pinata.cloud/ipfs/{CID}`
 - **Public IPFS**: `https://ipfs.io/ipfs/{CID}`
 - **Cloudflare**: `https://cloudflare-ipfs.com/ipfs/{CID}`
 
-## 9. Güvenlik
+## 9. Security
 
-- ✅ API anahtarlarınızı `.env.local` dosyasında saklayın
-- ✅ `.env.local` dosyasını `.gitignore`'a ekleyin
-- ❌ API anahtarlarını kod içinde hardcode etmeyin
-- ❌ API anahtarlarını public repository'lerde paylaşmayın
+- ✅ Store API keys in `.env.local` file
+- ✅ Add `.env.local` file to `.gitignore`
+- ❌ Don't hardcode API keys in code
+- ❌ Don't share API keys in public repositories
 
-## 10. Backup Stratejisi
+## 10. Backup Strategy
 
-Sistem şu sırayla IPFS servislerini dener:
+The system tries IPFS services in this order:
 
 1. **Pinata** (Primary)
 2. **NFT.Storage** (Fallback)
 3. **Mock Upload** (Development)
 
-Bu sayede bir servis çalışmazsa diğeri devreye girer.
+This way if one service fails, another takes over.
+
+## 11. Current Implementation
+
+### Active Configuration
+The AIrtist DApp currently uses Pinata as the primary IPFS service with the following features:
+
+- ✅ **Image Upload**: Direct image upload to IPFS
+- ✅ **Metadata Upload**: JSON metadata with image references
+- ✅ **Gateway URLs**: Accessible via multiple gateways
+- ✅ **Error Handling**: Automatic fallback to alternative services
+
+### API Integration
+The upload process works as follows:
+1. Image is uploaded to Pinata IPFS
+2. Metadata JSON is created with image CID
+3. Metadata is uploaded to Pinata IPFS
+4. Final metadata URL is returned for NFT minting
+
+---
+
+**Note**: This guide is for the current Pinata integration in AIrtist. Make sure to keep your API keys secure and monitor your usage.

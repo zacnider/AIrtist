@@ -1,43 +1,43 @@
 # 🏭 NFT Collection Factory System
 
-## 📋 Özet
+## 📋 Overview
 
-Her NFT koleksiyonunun farklı kontraktlarda olması için Factory Pattern kullanarak yeni bir mimari oluşturduk. Bu sistem sayesinde:
+We created a new architecture using Factory Pattern to have each NFT collection in separate contracts. This system provides:
 
-- ✅ **Her koleksiyon ayrı kontrat** - Kendi adresinde, bağımsız
-- ✅ **Factory kontrol sistemi** - Merkezi yönetim ve takip
-- ✅ **Otomatik ödeme dağıtımı** - Creator'a %99, Factory'ye %1
-- ✅ **Gelişmiş koleksiyon yönetimi** - Pause/resume, fiyat güncelleme
-- ✅ **Gas optimizasyonu** - Efficient deployment
+- ✅ **Each collection separate contract** - Own address, independent
+- ✅ **Factory control system** - Centralized management and tracking
+- ✅ **Automatic payment distribution** - 99% to Creator, 1% to Factory
+- ✅ **Advanced collection management** - Pause/resume, price updates
+- ✅ **Gas optimization** - Efficient deployment
 
-## 🏗️ Mimari
+## 🏗️ Architecture
 
 ### 1. **NFTCollectionFactory.sol**
-- Yeni koleksiyon kontraktları oluşturur
-- Tüm koleksiyonları takip eder
-- Factory fee'lerini yönetir
-- Creator'ların koleksiyonlarını listeler
+- Creates new collection contracts
+- Tracks all collections
+- Manages factory fees
+- Lists creators' collections
 
 ### 2. **IndividualNFTCollection.sol**
-- Her koleksiyon için ayrı kontrat
-- ERC721 standardı
-- Kendi mint fiyatı ve supply'ı
-- Creator'a otomatik ödeme
+- Separate contract for each collection
+- ERC721 standard
+- Own mint price and supply
+- Automatic payment to creator
 
 ### 3. **Frontend Integration**
-- Factory kontraktı ile etkileşim
-- Koleksiyon oluşturma arayüzü
-- Real-time koleksiyon takibi
+- Interaction with factory contract
+- Collection creation interface
+- Real-time collection tracking
 
-## 🚀 Kullanım
+## 🚀 Usage
 
-### Koleksiyon Oluşturma
+### Creating Collection
 
 ```typescript
-// 1. Factory kontraktına bağlan
+// 1. Connect to factory contract
 const factory = new Contract(FACTORY_ADDRESS, FACTORY_ABI, signer);
 
-// 2. Koleksiyon oluştur
+// 2. Create collection
 const tx = await factory.createCollection(
   "My Art Collection",    // name
   "MYART",               // symbol  
@@ -47,20 +47,20 @@ const tx = await factory.createCollection(
   { value: parseEther("0.01") } // creation fee
 );
 
-// 3. Transaction'ı bekle
+// 3. Wait for transaction
 const receipt = await tx.wait();
 
-// 4. Yeni koleksiyon adresini al
+// 4. Get new collection address
 const collectionAddress = receipt.logs[0].args.contractAddress;
 ```
 
-### NFT Mint Etme
+### Minting NFTs
 
 ```typescript
-// 1. Koleksiyon kontraktına bağlan
+// 1. Connect to collection contract
 const collection = new Contract(collectionAddress, COLLECTION_ABI, signer);
 
-// 2. NFT mint et
+// 2. Mint NFT
 const tx = await collection.mint(
   userAddress,           // to
   "ipfs://metadata-uri", // tokenURI
@@ -68,16 +68,16 @@ const tx = await collection.mint(
 );
 ```
 
-## 💰 Ekonomi
+## 💰 Economics
 
 ### Creation Fee
-- **0.01 MON** - Koleksiyon oluşturma ücreti
-- Factory sahibine gider
-- Spam'i önler
+- **0.01 MON** - Collection creation fee
+- Goes to factory owner
+- Prevents spam
 
 ### Mint Fee Distribution
-- **%99** → Collection Creator
-- **%1** → Factory (Platform fee)
+- **99%** → Collection Creator
+- **1%** → Factory (Platform fee)
 
 ### Gas Costs
 - **Collection Creation**: ~4.3M gas
@@ -86,19 +86,19 @@ const tx = await collection.mint(
 
 ## 🔧 Deployment
 
-### 1. Kontraktları Deploy Et
+### 1. Deploy Contracts
 
 ```bash
-# Local Hardhat node başlat
+# Start local Hardhat node
 npx hardhat node
 
-# Factory'yi deploy et
+# Deploy factory
 npx hardhat run scripts/deploy-factory.js --network localhost
 ```
 
-### 2. Frontend Config Güncelle
+### 2. Update Frontend Config
 
-Deploy script otomatik olarak `src/lib/contracts.ts` dosyasını günceller:
+Deploy script automatically updates `src/lib/contracts.ts` file:
 
 ```typescript
 export const CONTRACTS = {
@@ -109,31 +109,31 @@ export const CONTRACTS = {
 };
 ```
 
-## 📊 Avantajlar
+## 📊 Advantages
 
-### Önceki Sistem vs Yeni Sistem
+### Previous System vs New System
 
-| Özellik | Önceki (Tek Kontrat) | Yeni (Factory) |
-|---------|---------------------|----------------|
-| **Koleksiyon İzolasyonu** | ❌ Hepsi aynı kontrat | ✅ Her biri ayrı kontrat |
-| **Bağımsız Yönetim** | ❌ Merkezi kontrol | ✅ Creator kontrolü |
-| **Özelleştirme** | ❌ Sınırlı | ✅ Tam kontrol |
-| **Marketplace Uyumu** | ❌ Karışık | ✅ Temiz |
-| **Gas Efficiency** | ✅ Düşük | ⚠️ Orta |
-| **Scalability** | ❌ Sınırlı | ✅ Sınırsız |
+| Feature | Previous (Single Contract) | New (Factory) |
+|---------|---------------------------|---------------|
+| **Collection Isolation** | ❌ All in same contract | ✅ Each in separate contract |
+| **Independent Management** | ❌ Central control | ✅ Creator control |
+| **Customization** | ❌ Limited | ✅ Full control |
+| **Marketplace Compatibility** | ❌ Mixed | ✅ Clean |
+| **Gas Efficiency** | ✅ Low | ⚠️ Medium |
+| **Scalability** | ❌ Limited | ✅ Unlimited |
 
-## 🛠️ Geliştirici Notları
+## 🛠️ Developer Notes
 
 ### Factory Pattern Benefits
-1. **Separation of Concerns**: Her koleksiyon kendi işini yapar
-2. **Upgradability**: Factory güncellenebilir, koleksiyonlar etkilenmez
-3. **Security**: Bir koleksiyondaki bug diğerlerini etkilemez
-4. **Marketplace Integration**: Her koleksiyon ayrı entity
+1. **Separation of Concerns**: Each collection handles its own business
+2. **Upgradability**: Factory can be updated, collections unaffected
+3. **Security**: Bug in one collection doesn't affect others
+4. **Marketplace Integration**: Each collection is separate entity
 
 ### Best Practices
-1. **Gas Optimization**: Batch operations kullan
-2. **Error Handling**: Revert messages net olsun
-3. **Event Logging**: Tüm önemli işlemleri logla
+1. **Gas Optimization**: Use batch operations
+2. **Error Handling**: Clear revert messages
+3. **Event Logging**: Log all important operations
 4. **Access Control**: Proper permissions
 
 ## 🔍 Monitoring
@@ -149,7 +149,7 @@ event NFTMinted(uint256 indexed tokenId, address indexed to, string tokenURI);
 event CollectionCompleted();
 ```
 
-## 🚨 Güvenlik
+## 🚨 Security
 
 ### Factory Level
 - ✅ Reentrancy protection
@@ -163,20 +163,40 @@ event CollectionCompleted();
 - ✅ Supply enforcement
 - ✅ Payment distribution
 
-## 📈 Gelecek Geliştirmeler
+## 📈 Future Developments
 
-1. **Royalty System**: EIP-2981 desteği
+1. **Royalty System**: EIP-2981 support
 2. **Batch Operations**: Gas optimization
 3. **Metadata Standards**: Enhanced attributes
 4. **Cross-chain**: Multi-chain deployment
 5. **DAO Integration**: Community governance
 
-## 🎯 Sonuç
+## 🎯 Current Implementation
 
-Yeni Factory sistemi ile:
-- Her koleksiyon artık bağımsız bir kontrat
-- Creator'lar tam kontrol sahibi
-- Marketplace entegrasyonu daha kolay
-- Scalable ve güvenli mimari
+### AIrtist Factory System
+The current implementation uses a simplified factory pattern:
 
-Bu sistem NFT ekosisteminde industry standard'a uygun, profesyonel bir çözüm sunuyor.
+- **Factory Contract**: `0x7867B987ed2f04Afab67392d176b06a5b002d1F8`
+- **NFT Minter Contract**: `0x176f56fdBc95887a812fE41756F46B5D69eC41F3`
+
+### Key Features
+- ✅ **Collection Creation**: Factory manages collection metadata
+- ✅ **Separate Minting**: Dedicated minting contract
+- ✅ **IPFS Integration**: Metadata stored on IPFS
+- ✅ **Payment System**: 0.001 MON per NFT
+
+### Workflow
+1. Factory creates collection metadata
+2. NFT Minter handles actual minting
+3. IPFS stores images and metadata
+4. Blockchain records ownership
+
+## 🎯 Conclusion
+
+With the new Factory system:
+- Each collection is now an independent contract
+- Creators have full control
+- Marketplace integration is easier
+- Scalable and secure architecture
+
+This system provides an industry-standard, professional solution in the NFT ecosystem.

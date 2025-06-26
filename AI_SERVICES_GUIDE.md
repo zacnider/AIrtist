@@ -1,158 +1,175 @@
-# AI Görsel Üretim Servisleri Rehberi
+# AI Image Generation Services Guide
 
-Bu NFT Artist dApp'i birden fazla premium AI görsel üretim servisini destekler. İşte en iyi seçenekler:
+This AIrtist dApp supports multiple premium AI image generation services. Here are the best options:
 
-## 🏆 Önerilen Premium Servisler
+## 🏆 Recommended Premium Services
 
-### 1. **Replicate API** - En Ekonomik Premium Seçenek
-- **Maliyet**: ~$0.0023 per görsel (yaklaşık 0.07₺)
-- **Kalite**: Çok yüksek (Stable Diffusion XL)
-- **Hız**: 5-15 saniye
-- **Kayıt**: https://replicate.com/
+### 1. **Replicate API** - Most Economical Premium Option
+- **Cost**: ~$0.0023 per image (approximately $0.07)
+- **Quality**: Very high (Stable Diffusion XL)
+- **Speed**: 5-15 seconds
+- **Registration**: https://replicate.com/
 - **API Token**: https://replicate.com/account/api-tokens
 
-**Kurulum:**
+**Setup:**
 ```bash
-# .env.local dosyasına ekleyin:
+# Add to .env.local file:
 REPLICATE_API_TOKEN=r8_your_token_here
 ```
 
-### 2. **OpenAI DALL-E 3** - En Yüksek Kalite
-- **Maliyet**: ~$0.04 per görsel (yaklaşık 1.20₺)
-- **Kalite**: Mükemmel (En iyi prompt anlama)
-- **Hız**: 10-30 saniye
-- **Kayıt**: https://platform.openai.com/
+### 2. **OpenAI DALL-E 3** - Highest Quality
+- **Cost**: ~$0.04 per image (approximately $1.20)
+- **Quality**: Excellent (Best prompt understanding)
+- **Speed**: 10-30 seconds
+- **Registration**: https://platform.openai.com/
 - **API Key**: https://platform.openai.com/api-keys
 
-**Kurulum:**
+**Setup:**
 ```bash
-# .env.local dosyasına ekleyin:
+# Add to .env.local file:
 OPENAI_API_KEY=sk-your_key_here
 ```
 
-### 3. **Stability AI** - Resmi Stable Diffusion
-- **Maliyet**: ~$0.02 per görsel (yaklaşık 0.60₺)
-- **Kalite**: Yüksek (Resmi Stable Diffusion)
-- **Hız**: 5-20 saniye
-- **Kayıt**: https://platform.stability.ai/
+### 3. **Stability AI** - Official Stable Diffusion
+- **Cost**: ~$0.02 per image (approximately $0.60)
+- **Quality**: High (Official Stable Diffusion)
+- **Speed**: 5-20 seconds
+- **Registration**: https://platform.stability.ai/
 - **API Key**: https://platform.stability.ai/account/keys
 
-**Kurulum:**
+**Setup:**
 ```bash
-# .env.local dosyasına ekleyin:
+# Add to .env.local file:
 STABILITY_API_KEY=sk-your_key_here
 ```
 
-## 🆓 Ücretsiz Alternatif
+## 🆓 Free Alternative
 
-### **Pollinations.ai** - Ücretsiz Fallback
-- **Maliyet**: Ücretsiz
-- **Kalite**: İyi (Flux modeli)
-- **Hız**: 5-20 saniye
-- **Kurulum**: Gerekmiyor (otomatik fallback)
+### **Hugging Face** - Free Fallback
+- **Cost**: Free
+- **Quality**: Good (SDXL model)
+- **Speed**: 5-20 seconds
+- **Setup**: Requires API key
 
-## 💰 Maliyet Karşılaştırması
-
-| Servis | Görsel Başına | 100 Görsel | 1000 Görsel | Kalite |
-|--------|---------------|------------|-------------|---------|
-| **Replicate** | $0.0023 (0.07₺) | $0.23 (7₺) | $2.30 (70₺) | ⭐⭐⭐⭐⭐ |
-| **Stability AI** | $0.02 (0.60₺) | $2 (60₺) | $20 (600₺) | ⭐⭐⭐⭐⭐ |
-| **OpenAI DALL-E** | $0.04 (1.20₺) | $4 (120₺) | $40 (1200₺) | ⭐⭐⭐⭐⭐ |
-| **Pollinations** | Ücretsiz | Ücretsiz | Ücretsiz | ⭐⭐⭐⭐ |
-
-## 🚀 Hızlı Başlangıç
-
-### Adım 1: API Anahtarı Alın
-En ekonomik seçenek için **Replicate**'i öneririz:
-
-1. https://replicate.com/ adresine gidin
-2. Hesap oluşturun
-3. https://replicate.com/account/api-tokens adresinden token alın
-4. Kredi kartı ekleyin (minimum $5 yükleme)
-
-### Adım 2: API Anahtarını Ekleyin
+**Setup:**
 ```bash
-# .env.local dosyasını düzenleyin:
+# Add to .env.local file:
+HUGGING_FACE_API_KEY=hf_your_key_here
+```
+
+## 💰 Cost Comparison
+
+| Service | Per Image | 100 Images | 1000 Images | Quality |
+|---------|-----------|------------|-------------|---------|
+| **Replicate** | $0.0023 | $0.23 | $2.30 | ⭐⭐⭐⭐⭐ |
+| **Stability AI** | $0.02 | $2 | $20 | ⭐⭐⭐⭐⭐ |
+| **OpenAI DALL-E** | $0.04 | $4 | $40 | ⭐⭐⭐⭐⭐ |
+| **Hugging Face** | Free | Free | Free | ⭐⭐⭐⭐ |
+
+## 🚀 Quick Start
+
+### Step 1: Get API Key
+We recommend **Replicate** for the most economical option:
+
+1. Go to https://replicate.com/
+2. Create an account
+3. Get token from https://replicate.com/account/api-tokens
+4. Add credit card (minimum $5 deposit)
+
+### Step 2: Add API Key
+```bash
+# Edit .env.local file:
 REPLICATE_API_TOKEN=r8_your_actual_token_here
 ```
 
-### Adım 3: Uygulamayı Yeniden Başlatın
+### Step 3: Restart Application
 ```bash
 npm run dev
 ```
 
-## 🔄 API Öncelik Sırası
+## 🔄 API Priority Order
 
-Sistem API'leri şu sırayla dener:
+The system tries APIs in this order:
 
-1. **Replicate API** (varsa)
-2. **OpenAI DALL-E 3** (varsa)
-3. **Stability AI** (varsa)
-4. **Pollinations.ai** (ücretsiz fallback)
-5. **Gelişmiş Prosedürel** (son çare)
+1. **Replicate API** (if available)
+2. **OpenAI DALL-E 3** (if available)
+3. **Stability AI** (if available)
+4. **Hugging Face** (free fallback)
+5. **Advanced Procedural** (last resort)
 
-## 📊 Performans İpuçları
+## 📊 Performance Tips
 
-### En İyi Kalite İçin:
-- **OpenAI DALL-E 3** kullanın
-- Detaylı prompt'lar yazın
-- İngilizce prompt'lar tercih edin
+### For Best Quality:
+- Use **OpenAI DALL-E 3**
+- Write detailed prompts
+- Prefer English prompts
 
-### En Ekonomik İçin:
-- **Replicate API** kullanın
-- Toplu üretim yapın
-- Cache sistemi kurun
+### For Most Economical:
+- Use **Replicate API**
+- Do batch generation
+- Set up caching system
 
-### Ücretsiz İçin:
-- Sadece **Pollinations.ai** kullanın
-- API anahtarı eklemeyin
-- Sınırsız kullanım
+### For Free:
+- Use only **Hugging Face**
+- Don't add API keys for paid services
+- Unlimited usage
 
-## 🛠️ Gelişmiş Ayarlar
+## 🛠️ Advanced Settings
 
-### Prompt Optimizasyonu
-Sistem otomatik olarak prompt'ları geliştirir:
-- Kalite terimleri ekler
-- Stil analizi yapar
-- Teknik parametreler ayarlar
+### Prompt Optimization
+The system automatically enhances prompts:
+- Adds quality terms
+- Performs style analysis
+- Adjusts technical parameters
 
-### Özel Parametreler
+### Custom Parameters
 ```javascript
-// API çağrısında özel parametreler
+// Custom parameters in API call
 {
   prompt: "your prompt",
-  negative_prompt: "blurry, low quality", // İstenmeyen özellikler
+  negative_prompt: "blurry, low quality", // Unwanted features
   width: 1024,
   height: 1024,
-  guidance_scale: 7.5, // Prompt'a ne kadar uyulsun
-  num_inference_steps: 50 // Kalite vs hız
+  guidance_scale: 7.5, // How closely to follow prompt
+  num_inference_steps: 50 // Quality vs speed
 }
 ```
 
-## 🔧 Sorun Giderme
+## 🔧 Troubleshooting
 
-### API Hatası Alıyorsanız:
-1. API anahtarının doğru olduğunu kontrol edin
-2. Hesabınızda kredi olduğunu kontrol edin
-3. Rate limit'e takılmadığınızı kontrol edin
+### If You Get API Errors:
+1. Check that API key is correct
+2. Check that you have credits in your account
+3. Check that you haven't hit rate limits
 
-### Yavaş Üretim:
-1. Daha az inference step kullanın
-2. Daha küçük görsel boyutu seçin
-3. Basit prompt'lar kullanın
+### Slow Generation:
+1. Use fewer inference steps
+2. Choose smaller image size
+3. Use simpler prompts
 
-### Kalitesiz Görseller:
-1. Daha detaylı prompt yazın
-2. Negative prompt ekleyin
-3. Daha yüksek guidance scale kullanın
+### Poor Quality Images:
+1. Write more detailed prompts
+2. Add negative prompts
+3. Use higher guidance scale
 
-## 📞 Destek
+## 📞 Support
 
-Sorunlarınız için:
-- GitHub Issues açın
-- Discord sunucumuza katılın
-- Email: support@nftartist.com
+For issues:
+- Open GitHub Issues
+- Join our Discord server
+- Email: support@airtist.com
+
+## 🎯 Current Implementation
+
+### Supported Services
+- ✅ **Hugging Face SDXL** (Free, currently active)
+- ✅ **Replicate API** (Premium, ready to use)
+- ✅ **OpenAI DALL-E 3** (Premium, ready to use)
+- ✅ **Stability AI** (Premium, ready to use)
+
+### Active Configuration
+The dApp currently uses Hugging Face as the primary service with automatic fallback to other services if API keys are provided.
 
 ---
 
-**Not**: Bu rehber sürekli güncellenir. En son bilgiler için GitHub repo'yu takip edin.
+**Note**: This guide is continuously updated. Follow the GitHub repo for the latest information.
