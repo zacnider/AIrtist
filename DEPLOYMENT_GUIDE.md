@@ -1,41 +1,42 @@
-# NFT Artist Collection - Deployment Guide
+# AIrtist - Smart Contract Deployment Guide
 
-Bu rehber NFT Artist Collection akıllı kontratını Monad testnet'e deploy etmek için gerekli adımları içerir.
+This guide contains the necessary steps to deploy AIrtist smart contracts to Monad testnet.
 
-## 🚀 Hızlı Başlangıç
+## 🚀 Quick Start
 
-### 1. Gereksinimler
+### 1. Prerequisites
 
 ```bash
-# Node.js ve npm kurulu olmalı
-node --version  # v18+ gerekli
+# Node.js and npm must be installed
+node --version  # v18+ required
 npm --version
 
-# Hardhat kurulumu
+# Hardhat installation
 npm install --save-dev hardhat @nomicfoundation/hardhat-toolbox
 ```
 
-### 2. Hardhat Projesi Kurulumu
+### 2. Hardhat Project Setup
 
 ```bash
-# Proje dizininde
+# In project directory
 npx hardhat init
 
-# Gerekli bağımlılıklar
+# Required dependencies
 npm install @openzeppelin/contracts
 ```
 
-### 3. Hardhat Config Dosyası
+### 3. Hardhat Config File
 
-`hardhat.config.js` dosyasını oluşturun:
+Create `hardhat.config.js` file:
 
 ```javascript
 require("@nomicfoundation/hardhat-toolbox");
+require("dotenv").config();
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: {
-    version: "0.8.19",
+    version: "0.8.20",
     settings: {
       optimizer: {
         enabled: true,
@@ -47,81 +48,69 @@ module.exports = {
     monadTestnet: {
       url: "https://testnet-rpc.monad.xyz",
       chainId: 10143,
-      accounts: [process.env.PRIVATE_KEY] // Cüzdan private key'i
+      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+      gasPrice: 20000000000, // 20 gwei
+      gas: 8000000,
     }
   },
   etherscan: {
     apiKey: {
-      monadTestnet: "your-api-key" // Monad explorer API key
+      monadTestnet: "dummy-api-key", // Monad Explorer doesn't require API key
     },
     customChains: [
       {
         network: "monadTestnet",
         chainId: 10143,
         urls: {
-          apiURL: "https://testnet-api.monadexplorer.com/api",
-          browserURL: "https://testnet.monadexplorer.com"
-        }
-      }
-    ]
-  }
+          apiURL: "https://explorer.monad.xyz/api",
+          browserURL: "https://explorer.monad.xyz",
+        },
+      },
+    ],
+  },
 };
 ```
 
 ### 4. Environment Variables
 
-`.env` dosyası oluşturun:
+Create `.env` file:
 
 ```bash
-# Cüzdan private key (0x ile başlayan)
+# Wallet private key (starting with 0x)
 PRIVATE_KEY=your_wallet_private_key_here
 
-# Monad Explorer API Key (opsiyonel)
+# Monad Explorer API Key (optional)
 MONAD_API_KEY=your_api_key_here
 ```
 
-### 5. Deploy Script
+### 5. Deploy Scripts
 
-`scripts/deploy.js` dosyasını oluşturun:
+#### Factory Contract Deploy Script
+
+`scripts/deploy-factory.js`:
 
 ```javascript
 const hre = require("hardhat");
 
 async function main() {
-  console.log("Deploying NFTArtistCollection to Monad Testnet...");
+  console.log("Deploying NFTCollectionFactory to Monad Testnet...");
 
-  // Contract factory
-  const NFTArtistCollection = await hre.ethers.getContractFactory("NFTArtistCollection");
+  // Get deployer account
+  const [deployer] = await hre.ethers.getSigners();
+  console.log("Deploying contracts with the account:", deployer.address);
+  console.log("Account balance:", (await deployer.provider.getBalance(deployer.address)).toString());
+
+  // Deploy Factory Contract
+  const NFTCollectionFactory = await hre.ethers.getContractFactory("NFTCollectionFactory");
+  const factory = await NFTCollectionFactory.deploy();
   
-  // Deploy contract
-  const nftContract = await NFTArtistCollection.deploy();
+  await factory.waitForDeployment();
+  const factoryAddress = await factory.getAddress();
   
-  await nftContract.waitForDeployment();
+  console.log("✅ NFTCollectionFactory deployed to:", factoryAddress);
+  console.log("🔗 View on explorer:", `https://testnet.monadexplorer.com/address/${factoryAddress}`);
   
-  const contractAddress = await nftContract.getAddress();
-  
-  console.log("✅ NFTArtistCollection deployed to:", contractAddress);
-  console.log("🔗 View on explorer:", `https://testnet.monadexplorer.com/address/${contractAddress}`);
-  
-  // Verify contract (opsiyonel)
-  if (hre.network.name !== "hardhat") {
-    console.log("Waiting for block confirmations...");
-    await nftContract.deploymentTransaction().wait(5);
-    
-    try {
-      await hre.run("verify:verify", {
-        address: contractAddress,
-        constructorArguments: [],
-      });
-      console.log("✅ Contract verified on explorer");
-    } catch (error) {
-      console.log("❌ Verification failed:", error.message);
-    }
-  }
-  
-  // Update frontend config
-  console.log("\n📝 Update your frontend config:");
-  console.log(`const NFT_CONTRACT_ADDRESS = "${contractAddress}"`);
+  return factoryAddress;
 }
 
 main()
@@ -132,33 +121,117 @@ main()
   });
 ```
 
-## 🔧 Deployment Adımları
+#### NFT Minter Deploy Script
 
-### 1. Kontratı Deploy Edin
+`scripts/deploy-nft-minter.js`:
+
+```javascript
+const hre = require("hardhat");
+
+async function main() {
+  console.log("Deploying NFTMinter contract to Monad Testnet...");
+
+  // Get deployer account
+  const [deployer] = await hre.ethers.getSigners();
+  console.log("Deploying contracts with the account:", deployer.address);
+  console.log("Account balance:", (await deployer.provider.getBalance(deployer.address)).toString());
+
+  // Factory contract address (update this with your deployed factory address)
+  const FACTORY_CONTRACT_ADDRESS = "0x7867B987ed2f04Afab67392d176b06a5b002d1F8";
+
+  // Deploy NFT Minter Contract
+  const NFTMinter = await hre.ethers.getContractFactory("NFTMinter");
+  const nftMinter = await NFTMinter.deploy(FACTORY_CONTRACT_ADDRESS);
+  
+  await nftMinter.waitForDeployment();
+  const minterAddress = await nftMinter.getAddress();
+  
+  console.log("✅ NFTMinter deployed to:", minterAddress);
+  console.log("🔗 View on explorer:", `https://testnet.monadexplorer.com/address/${minterAddress}`);
+  
+  // Verify contract
+  if (hre.network.name !== "hardhat") {
+    console.log("Waiting for block confirmations...");
+    await nftMinter.deploymentTransaction().wait(5);
+    
+    try {
+      await hre.run("verify:verify", {
+        address: minterAddress,
+        constructorArguments: [FACTORY_CONTRACT_ADDRESS],
+      });
+      console.log("✅ Contract verified on explorer");
+    } catch (error) {
+      console.log("❌ Verification failed:", error.message);
+    }
+  }
+  
+  // Test contract functions
+  console.log("\n=== Testing Contract Functions ===");
+  try {
+    const mintPrice = await nftMinter.MINT_PRICE();
+    console.log("Mint Price:", hre.ethers.formatEther(mintPrice), "MON");
+    
+    const currentTokenId = await nftMinter.getCurrentTokenId();
+    console.log("Current Token ID:", currentTokenId.toString());
+  } catch (error) {
+    console.log("❌ Error testing contract functions:", error.message);
+  }
+  
+  console.log("\n=== Deployment Summary ===");
+  console.log("NFTMinter Contract Address:", minterAddress);
+  console.log("Factory Contract Address:", FACTORY_CONTRACT_ADDRESS);
+  console.log("Network: Monad Testnet");
+  console.log("Explorer URL:", `https://testnet.monadexplorer.com/address/${minterAddress}`);
+  
+  console.log("\n=== Next Steps ===");
+  console.log("1. Update your frontend config with the new NFTMinter address");
+  console.log("2. Add the NFTMinter ABI to your frontend");
+  console.log("3. Update your mint functions to use the new contract");
+}
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+```
+
+## 🔧 Deployment Steps
+
+### 1. Deploy Factory Contract
 
 ```bash
-# Monad testnet'e deploy
-npx hardhat run scripts/deploy.js --network monadTestnet
+# Deploy factory contract to Monad testnet
+npx hardhat run scripts/deploy-factory.js --network monadTestnet
 ```
 
-### 2. Frontend Config'i Güncelleyin
+### 2. Deploy NFT Minter Contract
 
-Deploy edilen kontrat adresini `src/lib/config.ts` dosyasında güncelleyin:
-
-```typescript
-export const NFT_CONTRACT_ADDRESS = "0xYourDeployedContractAddress" as const
+```bash
+# Deploy NFT minter contract to Monad testnet
+npx hardhat run scripts/deploy-nft-minter.js --network monadTestnet
 ```
 
-### 3. ABI'yi Güncelleyin
+### 3. Update Frontend Config
 
-Kontrat ABI'sini `src/lib/config.ts` dosyasına ekleyin:
+Update the deployed contract addresses in `src/lib/config.ts`:
 
 ```typescript
-export const NFT_CONTRACT_ABI = [
-  // Contract ABI buraya gelecek
+export const FACTORY_CONTRACT_ADDRESS = "0xYourFactoryContractAddress" as const
+export const NFT_MINTER_CONTRACT_ADDRESS = "0xYourNFTMinterContractAddress" as const
+```
+
+### 4. Update Contract ABIs
+
+Add contract ABIs to `src/lib/config.ts`:
+
+```typescript
+export const FACTORY_ABI = [
   {
     "inputs": [
       {"internalType": "string", "name": "name", "type": "string"},
+      {"internalType": "string", "name": "symbol", "type": "string"},
       {"internalType": "string", "name": "description", "type": "string"},
       {"internalType": "uint256", "name": "maxSupply", "type": "uint256"}
     ],
@@ -167,58 +240,78 @@ export const NFT_CONTRACT_ABI = [
     "stateMutability": "nonpayable",
     "type": "function"
   },
-  // ... diğer fonksiyonlar
+  // ... other functions
+] as const
+
+export const NFT_MINTER_ABI = [
+  {
+    "inputs": [
+      {"internalType": "address", "name": "to", "type": "address"},
+      {"internalType": "uint256", "name": "collectionId", "type": "uint256"},
+      {"internalType": "string", "name": "tokenURI", "type": "string"}
+    ],
+    "name": "mintToCollection",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  // ... other functions
 ] as const
 ```
 
-## 💰 Maliyet Hesaplaması
+## 💰 Cost Calculation
 
-### Gas Ücretleri (Monad Testnet)
-- **Contract Deploy**: ~2,500,000 gas
+### Gas Fees (Monad Testnet)
+- **Factory Contract Deploy**: ~2,500,000 gas
+- **NFT Minter Deploy**: ~3,000,000 gas
 - **Create Collection**: ~150,000 gas
 - **Mint NFT**: ~100,000 gas per NFT
-- **Batch Mint (10 NFT)**: ~800,000 gas
+- **Batch Mint (10 NFTs)**: ~800,000 gas
 
-### Örnek Maliyetler (1 MON = $1 varsayımı)
-- Collection oluşturma: Ücretsiz
-- NFT mint: 1 MON per NFT
-- 10 NFT koleksiyonu: 10 MON
-- 100 NFT koleksiyonu: 100 MON
+### Example Costs (assuming 1 MON = $1)
+- Collection creation: Free
+- NFT mint: 0.001 MON per NFT
+- 10 NFT collection: 0.01 MON
+- 100 NFT collection: 0.1 MON
 
-## 🧪 Test Etme
+## 🧪 Testing
 
-### 1. Local Test
+### 1. Local Testing
 
 ```bash
-# Hardhat network'te test
+# Test on Hardhat network
 npx hardhat test
 
-# Test script örneği
-npx hardhat run scripts/test-collection.js --network localhost
+# Run test script
+npx hardhat run scripts/test-contracts.js --network localhost
 ```
 
-### 2. Testnet Test
+### 2. Testnet Testing
 
 ```bash
-# Monad testnet'te test
-npx hardhat run scripts/test-collection.js --network monadTestnet
+# Test on Monad testnet
+npx hardhat run scripts/test-contracts.js --network monadTestnet
 ```
 
-### Test Script Örneği
+### Test Script Example
 
-`scripts/test-collection.js`:
+`scripts/test-contracts.js`:
 
 ```javascript
 const hre = require("hardhat");
 
 async function main() {
-  const contractAddress = "0xYourDeployedContractAddress";
-  const NFTArtistCollection = await hre.ethers.getContractAt("NFTArtistCollection", contractAddress);
+  const factoryAddress = "0xYourFactoryContractAddress";
+  const minterAddress = "0xYourNFTMinterContractAddress";
+  
+  const factory = await hre.ethers.getContractAt("NFTCollectionFactory", factoryAddress);
+  const minter = await hre.ethers.getContractAt("NFTMinter", minterAddress);
   
   // Test collection creation
   console.log("Creating test collection...");
-  const tx = await NFTArtistCollection.createCollection(
+  const tx = await factory.createCollection(
     "Test Collection",
+    "TEST",
     "A test NFT collection",
     10
   );
@@ -228,11 +321,12 @@ async function main() {
   
   // Test minting
   console.log("Minting test NFT...");
-  const mintTx = await NFTArtistCollection.mintToCollection(
-    "0xYourWalletAddress",
+  const [signer] = await hre.ethers.getSigners();
+  const mintTx = await minter.mintToCollection(
+    signer.address,
     1, // Collection ID
     "https://ipfs.io/ipfs/QmTestHash",
-    { value: hre.ethers.parseEther("1") } // 1 MON
+    { value: hre.ethers.parseEther("0.001") } // 0.001 MON
   );
   
   const mintReceipt = await mintTx.wait();
@@ -242,53 +336,69 @@ async function main() {
 main().catch(console.error);
 ```
 
-## 🔍 Doğrulama
+## 🔍 Verification
 
 ### 1. Contract Verification
 
 ```bash
-# Kontratı doğrula
-npx hardhat verify --network monadTestnet 0xYourContractAddress
+# Verify factory contract
+npx hardhat verify --network monadTestnet 0xYourFactoryContractAddress
+
+# Verify NFT minter contract
+npx hardhat verify --network monadTestnet 0xYourNFTMinterContractAddress "0xYourFactoryContractAddress"
 ```
 
-### 2. Frontend Test
+### 2. Frontend Testing
 
-1. Uygulamayı başlatın: `npm run dev`
-2. Collection Creator sekmesine gidin
-3. Test koleksiyonu oluşturun
-4. Monad testnet'e bağlanın
-5. Koleksiyonu blockchain'e deploy edin
+1. Start the application: `npm run dev`
+2. Go to AI Studio tab
+3. Create test collection
+4. Connect to Monad testnet
+5. Deploy collection to blockchain
+6. Test minting functionality
 
-## 🚨 Güvenlik Notları
+## 🚨 Security Notes
 
-### 1. Private Key Güvenliği
-- Private key'i asla commit etmeyin
-- `.env` dosyasını `.gitignore`'a ekleyin
-- Production'da hardware wallet kullanın
+### 1. Private Key Security
+- Never commit private keys
+- Add `.env` file to `.gitignore`
+- Use hardware wallets in production
 
-### 2. Contract Güvenliği
-- Kontratı audit ettirin
-- Test coverage %100 olsun
-- Mainnet'e geçmeden önce kapsamlı test yapın
+### 2. Contract Security
+- Audit contracts before mainnet
+- Achieve 100% test coverage
+- Perform comprehensive testing before mainnet deployment
 
-### 3. Frontend Güvenliği
-- API key'leri güvenli saklayın
-- Rate limiting uygulayın
-- Input validation yapın
+### 3. Frontend Security
+- Store API keys securely
+- Implement rate limiting
+- Validate all inputs
 
-## 📞 Destek
+## 📞 Support
 
-### Sorun Giderme
-1. **Gas yetersiz**: Gas limit'i artırın
-2. **RPC hatası**: Farklı RPC endpoint deneyin
-3. **Verification hatası**: Constructor arguments'ı kontrol edin
+### Troubleshooting
+1. **Insufficient gas**: Increase gas limit
+2. **RPC error**: Try different RPC endpoint
+3. **Verification error**: Check constructor arguments
 
-### Yararlı Linkler
+### Useful Links
 - [Monad Testnet Explorer](https://testnet.monadexplorer.com)
 - [Monad Testnet Faucet](https://testnet-faucet.monad.xyz)
 - [Hardhat Documentation](https://hardhat.org/docs)
 - [OpenZeppelin Contracts](https://docs.openzeppelin.com/contracts)
 
+## 🎯 Deployed Contracts (Example)
+
+### Monad Testnet
+- **Factory Contract**: `0x7867B987ed2f04Afab67392d176b06a5b002d1F8`
+- **NFT Minter Contract**: `0x176f56fdBc95887a812fE41756F46B5D69eC41F3`
+
+### Contract Features
+- **Factory Pattern**: Separate collection management and minting
+- **Batch Minting**: Efficient bulk NFT creation
+- **Payment Validation**: 0.001 MON per NFT
+- **Owner Functions**: Withdraw funds and update settings
+
 ---
 
-**Not**: Bu rehber Monad testnet için hazırlanmıştır. Mainnet deployment için ek güvenlik önlemleri gereklidir.
+**Note**: This guide is prepared for Monad testnet. Additional security measures are required for mainnet deployment.
